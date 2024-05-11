@@ -39,6 +39,7 @@ public class ScreenmatchApplication implements CommandLineRunner {
 			json =consumoApi.obtenerDatos("https://www.omdbapi.com/?t=fallout&Season=" + i + "&apikey=724175fd");
 			var datosTemporada = conversorDatos.obtenerDatos(json,DatosTemporadas.class);
 			temporadas.add(datosTemporada);
+
 		}
 		temporadas.forEach(System.out::println);
 		
