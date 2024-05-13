@@ -19,6 +19,7 @@ public class ScreenmatchApplication implements CommandLineRunner {
 		SpringApplication.run(ScreenmatchApplication.class, args);
 	}
 
+
 	@Override
 	public void run(String... args) throws Exception {
 		ConsumoAPI consumoApi = new ConsumoAPI();
