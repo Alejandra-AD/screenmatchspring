@@ -10,5 +10,9 @@ import java.util.List;
 public record DatosTemporadas(
         @JsonAlias("Season") Integer numeroTemporada,
         @JsonAlias("Episodes") List<DatosEpisodios>episodios) {
+       /* public String toString(){
+            return "\nTEMPORADA "+ numeroTemporada +"\nLista de episodios: " + episodios +"\n**********************";}*/
 
-}
+    }
+
+

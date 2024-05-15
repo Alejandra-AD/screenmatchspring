@@ -12,4 +12,10 @@ public record DatosEpisodios(
         @JsonAlias("Released") String fechaDeLanzamiento)
 
  {
+
+  /*public String toString(){
+   return "(Título: "+ titulo +", "+"Nro episodio: " + numeroEpisodio + ", "
+           + "Evaluación: " + evaluacion + ", " + "Fecha de lanzamiento: "
+           + fechaDeLanzamiento+ ")";
+  }*/
 }
