@@ -7,8 +7,10 @@ import com.aluracursos.screenmatch.service.ConsumoAPI;
 import com.aluracursos.screenmatch.service.ConversorDatos;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -55,7 +57,21 @@ public class Principal {
         }
 
         System.out.println("desde expresiones lamda");
+        int i = 1;
         temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
+
+
+        //convertir info en una lista datos episodio
+
+        List<DatosEpisodios> datosEpisodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream()).collect(Collectors.toList());
+
+        //top 5 episodios
+        System.out.println();
+        datosEpisodios.stream()
+                .sorted(Comparator.comparing(DatosEpisodios::evaluacion).reversed())
+                .limit(5)
+                .forEach(System.out::println);
 
 
     }
