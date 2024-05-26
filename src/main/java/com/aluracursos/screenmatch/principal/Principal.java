@@ -1,11 +1,14 @@
 package com.aluracursos.screenmatch.principal;
 
-import com.aluracursos.screenmatch.modulos.DatosEpisodios;
-import com.aluracursos.screenmatch.modulos.DatosSerie;
-import com.aluracursos.screenmatch.modulos.DatosTemporadas;
+import com.aluracursos.screenmatch.modelos.DatosEpisodios;
+import com.aluracursos.screenmatch.modelos.DatosSerie;
+import com.aluracursos.screenmatch.modelos.DatosTemporadas;
+import com.aluracursos.screenmatch.modelos.Episodio;
 import com.aluracursos.screenmatch.service.ConsumoAPI;
 import com.aluracursos.screenmatch.service.ConversorDatos;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -72,6 +75,30 @@ public class Principal {
                 .sorted(Comparator.comparing(DatosEpisodios::evaluacion).reversed())
                 .limit(5)
                 .forEach(System.out::println);
+
+
+        //Convierte los datos a una lista del tipo de datos Episodio
+        List <Episodio> episodios = temporadas.stream()
+                .flatMap(t ->  t.episodios().stream()
+                        .map(d -> new Episodio(t.numeroTemporada(),d)))
+                .collect(Collectors.toList());
+
+        episodios.forEach(System.out::println);
+
+        //Búsqueda de episodios a partir de x año
+        System.out.println("Por favor indique el año de estreno de la temporada para ver los episodios:");
+        var fecha = scanner.nextInt();
+        scanner.nextLine();
+        LocalDate fechaBusqueda = LocalDate.of(fecha,1,1);
+        DateTimeFormatter dft = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        episodios.stream()
+                .filter(e-> e.getFechaLanzamiento() != null && e.getFechaLanzamiento().isAfter(fechaBusqueda))
+                .forEach(e -> System.out.println(
+                        "Temporada: " + e.getTemporada()+
+                                "\nEpisodio: " + e.getTitulo() +
+                                "\nFecha de lanzamiento: " + e.getFechaLanzamiento().format(dft)
+                ));
 
 
     }
