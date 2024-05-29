@@ -3,7 +3,7 @@ package com.aluracursos.screenmatch.modelos;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-public class Episodio {
+public class Episodios {
 
     private Integer temporada;
     private String titulo;
@@ -11,7 +11,7 @@ public class Episodio {
     private Double evaluacion;
     private LocalDate fechaLanzamiento;
 
-    public Episodio(Integer numero ,DatosEpisodios d) {
+    public Episodios(Integer numero , DatosEpisodios d) {
         this.temporada = numero;
         this.titulo = d.titulo();
         this.numeroEpisodio = d.numeroEpisodio();
