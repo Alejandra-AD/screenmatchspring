@@ -25,4 +25,14 @@ public class Serie {
 
 
      }
+
+     public String toString(){
+          return "Titulo: "+ titulo
+                  + "\nTotal de temporadas: "+ totalDeTemporadas
+                  + "\nEvaluación: " + evaluacion
+                  + "\nPoster: "   + poster
+                  + "\nGenero: "   + genero
+                  + "\nActores: "  + actores
+                  + "\nSinopsis: " + sinopsis;
+     }
 }
