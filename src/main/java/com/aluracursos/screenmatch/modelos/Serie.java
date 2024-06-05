@@ -1,10 +1,8 @@
 package com.aluracursos.screenmatch.modelos;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.OptionalDouble;
 @Entity
 @Table(name = "series")
@@ -23,8 +21,8 @@ public class Serie {
      private Categoria genero;
      private String actores;
      private String sinopsis;
-     @Transient// tributo no será mapeado ni guardado en la tabla correspondiente a esta clase
-     private List<Episodios>episodios;
+     @OneToMany(mappedBy = "serie")
+     private List<Episodio>episodios;
 
      public Serie(){};
 
