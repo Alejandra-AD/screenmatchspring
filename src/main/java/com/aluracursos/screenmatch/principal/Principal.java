@@ -1,8 +1,10 @@
 package com.aluracursos.screenmatch.principal;
 
 import com.aluracursos.screenmatch.modelos.*;
+import com.aluracursos.screenmatch.repository.SerieRepository;
 import com.aluracursos.screenmatch.service.ConsumoAPI;
 import com.aluracursos.screenmatch.service.ConversorDatos;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,8 +15,15 @@ public class Principal {
     private ConversorDatos conversorDatos = new ConversorDatos();
     private Scanner scanner = new Scanner(System.in);
     private final String URL_API = "https://www.omdbapi.com/?t=";
-    private final String API_KEY = "&apikey=724175fd";
+
+    @Value("${omdb.api.key}")
+    private String API_KEY;
     private List<DatosSerie> datosSeries = new ArrayList<>();
+    private SerieRepository repositorio;
+
+    public Principal(SerieRepository repository) {
+        this.repositorio = repository;
+    }
 
 
     public void mostrarMenu(){
@@ -73,15 +82,13 @@ public class Principal {
 
     private void buscarSerieWeb(){
         DatosSerie datos = getDatoSerie();
-        datosSeries.add(datos);
+        Serie serie = new Serie(datos);
+        repositorio.save(serie);
         System.out.println(datos);
     }
 
     private void mostrarSeriesBuscadas(){
-        List <Serie> series = new ArrayList<>();
-        series = datosSeries.stream()
-                .map(d-> new Serie(d))
-                .collect(Collectors.toList());
+        List <Serie> series = repositorio.findAll();
 
         series.stream()
                 .sorted(Comparator.comparing(Serie::getGenero))
