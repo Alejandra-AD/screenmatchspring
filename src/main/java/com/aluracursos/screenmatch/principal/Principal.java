@@ -16,8 +16,8 @@ public class Principal {
     private Scanner scanner = new Scanner(System.in);
     private final String URL_API = "https://www.omdbapi.com/?t=";
 
-    @Value("${omdb.api.key}")
-    private String API_KEY;
+    private final String API_KEY ="&apikey=724175fd";
+
     private List<DatosSerie> datosSeries = new ArrayList<>();
     private SerieRepository repositorio;
     private List<Serie>series;
@@ -70,9 +70,9 @@ public class Principal {
     }
 
     private void buscarEpisodioPorSerie(){
-        System.out.println("LISTA DE SERIE GUARDADAS");
+        System.out.println("\nLISTA DE SERIE GUARDADAS");
         mostrarSeriesBuscadas();
-        System.out.println("Para ver la liste de episodios de su serie, por favor indique el nombre de la serie:");
+        System.out.println("\nPara ver la liste de episodios de su serie, por favor indique el nombre de la serie:");
         var serieBuscada = scanner.nextLine();
 
         Optional<Serie>serie =series.stream()
@@ -82,19 +82,19 @@ public class Principal {
         if(serie.isPresent()){
             var serieEncontrada = serie.get();
             List<DatosTemporadas> temporadas = new ArrayList<>();
-            for (int i = 1; i < serieEncontrada.getTotalDeTemporadas(); i++) {
-                var json = consumoAPI.obtenerDatos(URL_API + serieEncontrada.getTitulo().replace(" ", "+") + "&season=" + API_KEY);
+            for (int i = 1; i <= serieEncontrada.getTotalDeTemporadas(); i++) {
+                var json = consumoAPI.obtenerDatos(URL_API + serieEncontrada.getTitulo().replace(" ", "+") + "&season="+i+ API_KEY);
                 DatosTemporadas datosTemporadas = conversorDatos.obtenerDatos(json, DatosTemporadas.class);
                 temporadas.add(datosTemporadas);
             }
             List <Episodio> episodios = temporadas.stream()
-                    .flatMap(t ->  t.episodios().stream()
-                            .map(d -> new Episodio(t.numeroTemporada(),d)))
+                    .flatMap(d ->  d.episodios().stream()
+                            .map(e -> new Episodio(d.numeroTemporada(),e)))
                     .collect(Collectors.toList());
 
             serieEncontrada.setEpisodios(episodios);
             repositorio.save(serieEncontrada);
-            /*temporadas.forEach(System.out::println);*/
+            temporadas.forEach(System.out::println);
 
 
         }else{
@@ -121,11 +121,5 @@ public class Principal {
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
     }
-
-
-
-
-
-
 
 }

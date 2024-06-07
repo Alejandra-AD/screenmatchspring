@@ -64,6 +64,34 @@ public class Episodio {
         return serie;
     }
 
+    public void setId(Long id) {
+        Id = id;
+    }
+
+    public void setTemporada(Integer temporada) {
+        this.temporada = temporada;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public void setNumeroEpisodio(Integer numeroEpisodio) {
+        this.numeroEpisodio = numeroEpisodio;
+    }
+
+    public void setEvaluacion(Double evaluacion) {
+        this.evaluacion = evaluacion;
+    }
+
+    public void setFechaLanzamiento(LocalDate fechaLanzamiento) {
+        this.fechaLanzamiento = fechaLanzamiento;
+    }
+
+    public void setSerie(Serie serie) {
+        this.serie = serie;
+    }
+
     public String toString(){
 
         return
