@@ -92,7 +92,10 @@ public class Principal {
                             .map(d -> new Episodio(t.numeroTemporada(),d)))
                     .collect(Collectors.toList());
 
-            temporadas.forEach(System.out::println);
+            serieEncontrada.setEpisodios(episodios);
+            repositorio.save(serieEncontrada);
+            /*temporadas.forEach(System.out::println);*/
+
 
         }else{
             System.out.println("Serie no encontrada. Ingrese un nombre de serie disponible");
