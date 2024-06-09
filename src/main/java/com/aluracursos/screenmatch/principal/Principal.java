@@ -21,6 +21,7 @@ public class Principal {
     private List<DatosSerie> datosSeries = new ArrayList<>();
     private SerieRepository repositorio;
     private List<Serie>series;
+    private Optional <Serie> serieBuscadaDB;
 
     public Principal(SerieRepository repository) {
         this.repositorio = repository;
@@ -49,6 +50,12 @@ public class Principal {
                 case 1-> buscarSerieWeb();
                 case 2-> buscarEpisodioPorSerie();
                 case 3-> mostrarSeriesBuscadas();
+                case 4-> buscarSeriesPorTitulo();
+                case 5-> buscarTop5Series();
+                case 6-> buscarSeriesPorCategoria();
+                case 7-> filtrarSeriesPorTemporadaYEvaluacion();
+                case 8-> buscarEpisodiosPorTitulo();
+                case 9-> buscarTop5Episodios();
                 case 0-> {System.out.println("Cerrando la aplicación");
                 break;}
                 default -> System.out.println("Opción inválida");
@@ -101,10 +108,6 @@ public class Principal {
             System.out.println("Serie no encontrada. Ingrese un nombre de serie disponible");
         }
 
-
-
-
-
     }
 
     private void buscarSerieWeb(){
@@ -121,5 +124,64 @@ public class Principal {
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
     }
+
+    private void buscarSeriesPorTitulo(){
+        System.out.println("Escribe el nombre de la serie que deseas buscar:");
+        var nombreSerie = scanner.nextLine();
+        serieBuscadaDB = repositorio.findByTituloContainsIgnoreCase(nombreSerie);
+        if(serieBuscadaDB.isPresent()){
+            System.out.println("La serie buscada es: " + serieBuscadaDB);
+        }else {
+            System.out.println("Serie no encontrada");
+        }
+    }
+
+    private void buscarTop5Series(){
+        List<Serie> top5SeriesDB= repositorio.findTop5ByOrderByEvaluacionDesc();
+        top5SeriesDB.forEach(s-> System.out.println(s.getTitulo()));
+    }
+    private void buscarSeriesPorCategoria(){
+        System.out.println("Indique el género de la serie que quiere buscar: ");
+        var genero = scanner.nextLine();
+        var categoria = Categoria.fromEspanol(genero);
+        List<Serie> seriesPorCategoria = repositorio.findByGenero(categoria);
+        System.out.println("Las series de la categoría " + genero);
+        seriesPorCategoria.forEach(System.out::println);
+
+    }
+
+    private void filtrarSeriesPorTemporadaYEvaluacion(){
+        System.out.println("Indique la serie con el total de temporada y puntuación que desea buscar");
+        System.out.println("Indique el total de temporadas");
+        var totalTemporadas = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Indique evaluación");
+        var evaluacion = scanner.nextDouble();
+
+        var serieTemporadasEvaluacionBuscada = repositorio.seriesPorTemparadaYEvaluacion(totalTemporadas,evaluacion);
+
+        serieTemporadasEvaluacionBuscada.forEach(d-> System.out.println("\nSerie: " + d.getTitulo().toUpperCase()
+        + "\nTotal de temporadas: " + d.getTotalDeTemporadas()
+        + "\nEvaluación: "+ d.getEvaluacion()));
+    }
+    private void buscarEpisodiosPorTitulo(){
+        System.out.println("Escriba el titulo del episodio que desea buscar:");
+        var nombreEpisodio = scanner.nextLine();
+        var busquedaEpisodio = repositorio.episodiosPorNombre(nombreEpisodio);
+        busquedaEpisodio.forEach(System.out::println);
+
+    }
+    private void buscarTop5Episodios(){
+        buscarSeriesPorTitulo();
+        if (serieBuscadaDB.isPresent()){
+            Serie serie = serieBuscadaDB.get();
+            List <Episodio> topEpisodios = repositorio.top5Episodios(serie);
+            topEpisodios.forEach(e ->
+                    System.out.printf("Serie: %s - Temporada %s - Episodio %s - Evaluación %s\n",
+                           e.getSeries().getTitulo(), e.getTitulo(), e.getTemporada(), e.getNumeroEpisodio(), e.getEvaluacion()));
+        }
+
+    }
+
 
 }
