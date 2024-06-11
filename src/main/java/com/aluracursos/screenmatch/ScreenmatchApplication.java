@@ -1,6 +1,3 @@
-
-
-/*
 package com.aluracursos.screenmatch;
 
 import com.aluracursos.screenmatch.principal.Principal;
@@ -11,22 +8,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ScreenmatchApplicationConsola implements CommandLineRunner {
-
-	@Autowired
-	private SerieRepository repository;//inyección de dependencias
+public class ScreenmatchApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ScreenmatchApplicationConsola.class, args);
+		SpringApplication.run(ScreenmatchApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
 
-		System.out.println("desde menu");
-		Principal appPrincipal = new Principal(repository);
-		appPrincipal.mostrarMenu();
-
-	}
 }
-*/
