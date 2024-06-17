@@ -11,7 +11,7 @@ public class Serie {
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)//auto genera el valor para la id
 
-     private Long id;
+     private Long ID;
      @Column(unique = true)
      private String titulo;
      private Integer totalDeTemporadas;
@@ -96,6 +96,10 @@ public class Serie {
 
      public List<Episodio> getEpisodios() {
           return episodios;
+     }
+
+     public Long getId() {
+          return ID;
      }
 
      public void setEpisodios(List<Episodio> episodios) {

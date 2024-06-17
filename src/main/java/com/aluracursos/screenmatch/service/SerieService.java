@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +31,22 @@ public class SerieService {
     private List<SerieDTO> convieteDatosSerieaSerieDTO(List<Serie>serie){
 
        return serie.stream()
-                .map(s->new SerieDTO(s.getTitulo(),s.getTotalDeTemporadas(),s.getEvaluacion(),s.getPoster()
+                .map(s->new SerieDTO(s.getId(),s.getTitulo(),s.getTotalDeTemporadas(),s.getEvaluacion(),s.getPoster()
                         ,s.getGenero(),s.getActores(),s.getSinopsis())).collect(Collectors.toList());
+    }
+
+    public SerieDTO obtenerSeriePorID(Long id) {
+
+        Optional<Serie> serieID = repository.findByID(id);
+        if (serieID.isPresent()){
+            Serie s = serieID.get();
+            return new SerieDTO(s.getId(),s.getTitulo(),s.getTotalDeTemporadas(),s.getEvaluacion(),s.getPoster()
+                    ,s.getGenero(),s.getActores(),s.getSinopsis());
+        }else{
+            return null;
+        }
+
+
+
     }
 }
