@@ -29,4 +29,9 @@ public interface SerieRepository extends JpaRepository<Serie,Long> {
     /*List<Serie> findTop5SeriesByfechaLanzamientoDesc();*/
 
     Optional<Serie>findByID(Long id);
+
+
+
+    @Query("SELECT e FROM Serie s JOIN s.episodios e WHERE s.id = :id AND e.temporada = :numeroTemporada")
+    List<Episodio>episodiosPorTemporada(Long id, Long numeroTemporada);
 }
